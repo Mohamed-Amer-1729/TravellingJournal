@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.travellingjournal"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.travellingjournal"
-        minSdk = 30
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -29,6 +30,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures{
+        viewBinding=true;
     }
 }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    app:cardCornerRadius="20dp"
+    app:strokeColor="#bbbbbb"
+    app:strokeWidth="5dp"
+    android:layout_margin="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/location"
+            tools:text="Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/description"
+            tools:text="Description"
+            app:layout_constraintTop_toBottomOf="@+id/location"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="20dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/date"
+            tools:text="Show Notes"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="20dp"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
