@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "16975827002",
+    "project_id": "journal-e340a",
+    "storage_bucket": "journal-e340a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16975827002:android:2ccb660e99490c23b26503",
+        "android_client_info": {
+          "package_name": "com.example.travellingjournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16975827002-2enojnbkgf3ugrlafv23c5ui0rjlrh80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC93GGG0l_Oy-IzDcc6JaMeiohcz8P7Sh4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16975827002-2enojnbkgf3ugrlafv23c5ui0rjlrh80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
