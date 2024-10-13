@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"/>
         <Button
             android:layout_width="wrap_content"
-            android:id="@+id/date"
+            android:id="@+id/show_notes"
             tools:text="Show Notes"
             app:layout_constraintTop_toBottomOf="@id/description"
             app:layout_constraintEnd_toEndOf="parent"
