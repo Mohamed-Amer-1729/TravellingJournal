@@ -56,6 +56,7 @@ class SignupFragment : Fragment() {
                     Toast.makeText(requireContext(), "Signup successful!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "Signup failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    /**/
                 }
             }
     }
