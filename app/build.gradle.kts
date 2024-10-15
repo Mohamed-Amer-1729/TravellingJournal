@@ -4,6 +4,12 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+buildscript{
+    dependencies{
+        classpath ("com.google.gms:google-services:4.4.2")
+    }
+}
+
 android {
 
     namespace = "com.example.travellingjournal"
@@ -35,10 +41,17 @@ android {
     buildFeatures{
         viewBinding=true;
     }
+
+
 }
 
+
+
 dependencies {
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -49,3 +62,5 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
+
+apply(plugin = "com.google.gms.google-services")
