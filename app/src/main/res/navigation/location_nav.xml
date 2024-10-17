@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/location_nav"
-    app:startDestination="@id/locationsScreen">
+    app:startDestination="@id/login_fragment">
 
     <fragment
         android:id="@+id/locationsScreen"
@@ -13,17 +13,62 @@
         <action
             android:id="@+id/action_locationsScreen_to_locationScreen"
             app:destination="@id/locationScreen" />
+        <action
+            android:id="@+id/action_locationsScreen_to_addLocation"
+            app:destination="@id/addLocation" />
     </fragment>
     <fragment
         android:id="@+id/locationScreen"
         android:name="com.example.travellingjournal.LocationScreen"
-        android:label="LocationScreen" />
+        android:label="LocationScreen" >
+        <action
+            android:id="@+id/action_locationScreen_to_noteDetails"
+            app:destination="@id/noteDetails" />
+        <action
+            android:id="@+id/action_locationScreen_to_addNote"
+            app:destination="@id/addNote" />
+    </fragment>
     <fragment
         android:id="@+id/addLocation"
         android:name="com.example.travellingjournal.AddLocation"
-        android:label="AddLocation" />
+        android:label="AddLocation" >
+        <action
+            android:id="@+id/action_addLocation_to_locationsScreen"
+            app:destination="@id/locationsScreen" />
+    </fragment>
     <fragment
         android:id="@+id/addNote"
         android:name="com.example.travellingjournal.AddNote"
-        android:label="AddNote" />
+        android:label="AddNote" >
+        <action
+            android:id="@+id/action_addNote_to_locationScreen"
+            app:destination="@id/locationScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.travellingjournal.login_fragment"
+        android:label="login_fragment" >
+        <action
+            android:id="@+id/action_login_fragment_to_locationsScreen"
+            app:destination="@id/locationsScreen" />
+        <action
+            android:id="@+id/action_login_fragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.travellingjournal.SignupFragment"
+        android:label="SignupFragment" >
+        <action
+            android:id="@+id/action_signupFragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteDetails"
+        android:name="com.example.travellingjournal.NoteDetails"
+        android:label="NoteDetails" >
+        <action
+            android:id="@+id/action_noteDetails_to_locationScreen"
+            app:destination="@id/locationScreen" />
+    </fragment>
 </navigation>

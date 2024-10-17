@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         // Load SignupFragment into the main activity
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SignupFragment())
+                .replace(R.id.location_nav, SignupFragment())
                 .commit()
         }
     }

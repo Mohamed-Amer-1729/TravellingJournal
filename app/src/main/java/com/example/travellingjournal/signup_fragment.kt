@@ -33,9 +33,9 @@ class SignupFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.signup_fragment, container, false)
 
-        emailEditText = view.findViewById(R.id.emailEditText)
-        passwordEditText = view.findViewById(R.id.passwordEditText)
-        signupButton = view.findViewById(R.id.signupButton)
+        emailEditText = view.findViewById(R.id.etEmail)
+        passwordEditText = view.findViewById(R.id.etPassword)
+        signupButton = view.findViewById(R.id.btnSignUp)
 
         signupButton.setOnClickListener { signUpUser() }
 
