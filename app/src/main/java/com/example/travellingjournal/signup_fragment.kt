@@ -86,6 +86,7 @@ class SignupFragment : Fragment() {
             "email" to email,
             "user_name" to username,
             "user_id" to userId,
+            /**/
         )
 
         firestore.collection("users").document(userId).set(userInfo)
