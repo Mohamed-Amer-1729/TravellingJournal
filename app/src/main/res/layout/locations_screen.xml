@@ -15,6 +15,7 @@
        tools:listitem="@layout/location_item"/>
 
    <com.google.android.material.floatingactionbutton.FloatingActionButton
+       android:contentDescription="Add Location"
        android:id="@+id/add_location_button"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
