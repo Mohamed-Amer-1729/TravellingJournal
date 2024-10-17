@@ -16,6 +16,7 @@ class SignupFragment : Fragment() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var usernameEditText: EditText
     private lateinit var signupButton: Button
 
     private lateinit var auth: FirebaseAuth
@@ -33,6 +34,8 @@ class SignupFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.signup_fragment, container, false)
 
+        // Update IDs to match those in your XML
+        usernameEditText = view.findViewById(R.id.etUsername)
         emailEditText = view.findViewById(R.id.etEmail)
         passwordEditText = view.findViewById(R.id.etPassword)
         signupButton = view.findViewById(R.id.btnSignUp)
@@ -43,11 +46,12 @@ class SignupFragment : Fragment() {
     }
 
     private fun signUpUser() {
+        val username = usernameEditText.text.toString().trim()
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        // Check if email or password fields are empty
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+        // Check if any fields are empty
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -57,29 +61,31 @@ class SignupFragment : Fragment() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Send email verification
-                    sendEmailVerification()
+                    sendEmailVerification(username)
                 } else {
                     Toast.makeText(requireContext(), "Signup failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun sendEmailVerification() {
+    private fun sendEmailVerification(username: String) {
         val user = auth.currentUser
         user?.sendEmailVerification()
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(requireContext(), "Verification email sent. Please check your inbox.", Toast.LENGTH_SHORT).show()
-                    saveUserInfo(user.uid, user.email ?: "")
+                    saveUserInfo(user.uid, user.email ?: "", username)
                 } else {
                     Toast.makeText(requireContext(), "Failed to send verification email: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun saveUserInfo(userId: String, email: String) {
+    private fun saveUserInfo(userId: String, email: String, username: String) {
         val userInfo = hashMapOf(
-            "email" to email
+            "email" to email,
+            "user_id" to userId,
+            "user_name" to username
         )
 
         firestore.collection("users").document(userId).set(userInfo)
