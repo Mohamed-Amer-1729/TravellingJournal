@@ -5,8 +5,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.travellingjournal.databinding.SignupFragmentBinding
@@ -15,10 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SignupFragment : Fragment() {
 
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var usernameEditText: EditText
-    private lateinit var signupButton: Button
+    private var _binding: SignupFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
@@ -33,24 +29,19 @@ class SignupFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.signup_fragment, container, false)
+    ): View {
+        _binding = SignupFragmentBinding.inflate(inflater, container, false)
 
-        // Update IDs to match those in your XML
-        usernameEditText = view.findViewById(R.id.etUsername)
-        emailEditText = view.findViewById(R.id.etEmail)
-        passwordEditText = view.findViewById(R.id.etPassword)
-        signupButton = view.findViewById(R.id.btnSignUp)
+        // Set up button click listener using View Binding
+        binding.btnSignUp.setOnClickListener { signUpUser() }
 
-        signupButton.setOnClickListener { signUpUser() }
-
-        return view
+        return binding.root
     }
 
     private fun signUpUser() {
-        val username = usernameEditText.text.toString().trim()
-        val email = emailEditText.text.toString().trim()
-        val password = passwordEditText.text.toString().trim()
+        val username = binding.etUsername.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
 
         // Check if any fields are empty
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
@@ -97,5 +88,10 @@ class SignupFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
