@@ -26,7 +26,7 @@ class LocationsScreen : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: MyAdaptorLocations
     var db = Firebase.firestore
-    val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+    val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getString("USER_ID", null)
 
     override fun onCreateView(
