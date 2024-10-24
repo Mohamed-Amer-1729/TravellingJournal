@@ -14,49 +14,50 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apiapp.MyAdaptorLocations
 import com.example.travellingjournal.databinding.LocationsScreenBinding
-import com.google.firebase.firestore.firestore
-import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LocationsScreen : Fragment() {
 
-    lateinit var binding: LocationsScreenBinding
-    lateinit var Locations: MutableList<Location>
-    lateinit var recyclerView: RecyclerView
-    lateinit var adapter: MyAdaptorLocations
-    var db = Firebase.firestore
-    val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-    val userId = sharedPreferences.getString("USER_ID", null)
+    private lateinit var binding: LocationsScreenBinding
+    private lateinit var locations: MutableList<Location>
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MyAdaptorLocations
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding=LocationsScreenBinding.inflate(layoutInflater,container,false)
+        binding = LocationsScreenBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
-
         super.onViewCreated(view, savedInstanceState)
 
-        //Sets up the adapter
-        Locations = mutableListOf<Location>()
+        // Get SharedPreferences
+        val sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("USER_ID", null)
+
+        // Setup the adapter
+        locations = mutableListOf()
         recyclerView = binding.locationsRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(false)
-        adapter = MyAdaptorLocations(Locations)
+        adapter = MyAdaptorLocations(locations)
         recyclerView.adapter = adapter
-        lifecycleScope.launch(Dispatchers.IO){
-            getLocations()
-            Log.d("Dispatcher", "Stugg")
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (userId != null) {
+                getLocations(userId)
+                Log.d("Dispatcher", "Fetching locations...")
+            }
         }
 
-        //Sets up way to move to notes
-        adapter.onShowNotesClickListener(object : MyAdaptorLocations.OnShowNotesListener{
+        // Setup way to move to notes
+        adapter.onShowNotesClickListener(object : MyAdaptorLocations.OnShowNotesListener {
             override fun onShowNotes(position: Int) {
                 val bundle = bundleOf(
                     "Location" to adapter.list[position].ID
@@ -65,29 +66,30 @@ class LocationsScreen : Fragment() {
             }
         })
 
-        //Way to move to add location
+        // Way to move to add location
         binding.addLocationButton.setOnClickListener {
             findNavController().navigate(R.id.action_locationsScreen_to_addLocation)
         }
     }
 
-    suspend fun getLocations(){
+    private suspend fun getLocations(userId: String) {
         val ref = db.collection("users").document(userId).collection("locations")
-        ref.get().addOnSuccessListener { locations->
-            for (location in locations){
-                Locations.add(Location(
-                    location.id,
-                    location.data["location_title"] as String,
-                    location.data["notes_count"] as Long
-                ))
-                Log.d("Data FireStore", "${location.data["location_title"]} and ${location.data["notes_count"]}")
+        ref.get().addOnSuccessListener { locationsSnapshot ->
+            for (location in locationsSnapshot) {
+                locations.add(
+                    Location(
+                        location.id,
+                        location.getString("location_title") ?: "",
+                        location.getLong("notes_count") ?: 0L
+                    )
+                )
+                Log.d("Data FireStore", "${location.getString("location_title")} and ${location.getLong("notes_count")}")
             }
             adapter.notifyDataSetChanged()
             Log.d("Final Data", "Dataset Changed")
-        }.addOnFailureListener {exception->
+        }.addOnFailureListener { exception ->
             Log.d("Failure", "$exception")
         }
-        Log.d("After stuff", "Stuff finished")
-
+        Log.d("After stuff", "Finished fetching locations")
     }
 }
