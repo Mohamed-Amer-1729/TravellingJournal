@@ -56,13 +56,36 @@ class LocationsScreen : Fragment() {
             }
         }
 
-        // Setup way to move to notes
-        adapter.onShowNotesClickListener(object : MyAdaptorLocations.OnShowNotesListener {
+        //Sets up way to move to notes
+        adapter.onShowNotesClickListener(object : MyAdaptorLocations.OnShowNotesListener{
             override fun onShowNotes(position: Int) {
                 val bundle = bundleOf(
                     "Location" to adapter.list[position].ID
                 )
                 findNavController().navigate(R.id.action_locationsScreen_to_locationScreen, bundle)
+            }
+        })
+
+        //Sets up way to edit location
+        adapter.onEditLocationClickListener(object : MyAdaptorLocations.OnEditLocationListener{
+            override fun onEditLocation(position: Int) {
+                val bundle = bundleOf(
+                    "Title" to adapter.list[position].title,
+                    "ID" to adapter.list[position].ID
+                )
+                findNavController().navigate(R.id.action_locationsScreen_to_addLocation, bundle)
+            }
+        })
+
+        //Sets up way to delete location
+        adapter.onDeleteLocationClickListener(object : MyAdaptorLocations.OnDeleteLocationListener {
+            override fun onDeleteLocation(position: Int) {
+                val ref = userId?.let { db.collection("users").document(it).collection("locations") }
+                if (ref != null) {
+                    ref.document(adapter.list[position].ID).delete()
+                }
+
+                adapter.deleteLocation(position)
             }
         })
 
