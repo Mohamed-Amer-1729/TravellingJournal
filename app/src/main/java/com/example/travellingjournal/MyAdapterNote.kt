@@ -3,6 +3,7 @@ package com.example.travellingjournal
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,10 +13,13 @@ class MyAdapterNotes(val list: MutableList<Note>): RecyclerView.Adapter<Recycler
         fun onClick(position: Int)
     }
 
+    
+
     inner class MyViewHolder(itemView: View, listener: OnItemClickListener): RecyclerView.ViewHolder(itemView){
         val titleView: TextView = itemView.findViewById(R.id.title_note)
         val contentView: TextView = itemView.findViewById(R.id.content_note)
         val dateView: TextView = itemView.findViewById(R.id.date_note)
+        val deleteButton: Button = itemView.findViewById(R.id.delete_note)
 
         fun bindData(note: Note){
             titleView.text = note.title

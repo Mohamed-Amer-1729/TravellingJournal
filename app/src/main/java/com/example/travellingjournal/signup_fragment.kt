@@ -13,8 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SignupFragment : Fragment() {
 
-    private var _binding: SignupFragmentBinding? = null
-    private val binding get() = _binding!!
+
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
@@ -30,7 +29,7 @@ class SignupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = SignupFragmentBinding.inflate(inflater, container, false)
+        binding = SignupFragmentBinding.inflate(inflater, container, false)
 
         // Set up button click listener using View Binding
         binding.btnSignUp.setOnClickListener { signUpUser() }
@@ -90,8 +89,5 @@ class SignupFragment : Fragment() {
             }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

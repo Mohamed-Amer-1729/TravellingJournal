@@ -17,14 +17,36 @@ class MyAdaptorLocations(val list: MutableList<Location>):RecyclerView.Adapter<R
         fun onShowNotes(position: Int)
     }
 
+    lateinit var editLocationListener: OnEditLocationListener
+
+    interface OnEditLocationListener {
+        fun onEditLocation(position: Int)
+    }
+
+    lateinit var deleteLocationListener: OnDeleteLocationListener
+
+    interface OnDeleteLocationListener {
+        fun onDeleteLocation(position: Int)
+    }
+
     fun onShowNotesClickListener(listener: OnShowNotesListener){
         showNotesListener = listener
+    }
+
+    fun onEditLocationClickListener(listener: OnEditLocationListener){
+        editLocationListener = listener
+    }
+
+    fun onDeleteLocationClickListener(listener: OnDeleteLocationListener){
+        deleteLocationListener = listener
     }
 
     inner class MyViewHolder(itemView: View, listener: OnShowNotesListener):RecyclerView.ViewHolder(itemView){
         val TextViewTitle: TextView = itemView.findViewById(R.id.location)
         val TextViewNoteCount: TextView = itemView.findViewById(R.id.description)
         val ShowNotesButton: Button = itemView.findViewById(R.id.show_notes)
+        val EditLocationButton: Button = itemView.findViewById(R.id.edit_location)
+        val DeleteLocationButton: Button = itemView.findViewById(R.id.delete_location)
 
         fun bindData(location: Location){
             TextViewTitle.text = location.title
@@ -34,6 +56,14 @@ class MyAdaptorLocations(val list: MutableList<Location>):RecyclerView.Adapter<R
         init {
             ShowNotesButton.setOnClickListener {
                 showNotesListener.onShowNotes(adapterPosition)
+            }
+
+            EditLocationButton.setOnClickListener{
+                editLocationListener.onEditLocation(adapterPosition)
+            }
+
+            DeleteLocationButton.setOnClickListener {
+                deleteLocationListener.onDeleteLocation(adapterPosition)
             }
         }
 
@@ -51,6 +81,11 @@ class MyAdaptorLocations(val list: MutableList<Location>):RecyclerView.Adapter<R
         val item=list.get(position)
         (holder as MyViewHolder).bindData(item)
 
+    }
+
+    fun deleteLocation(position: Int){
+        list.removeAt(position)
+        notifyDataSetChanged()
     }
 
 

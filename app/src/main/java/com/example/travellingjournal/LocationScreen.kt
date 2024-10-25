@@ -1,5 +1,6 @@
 package com.example.travellingjournal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -25,13 +26,13 @@ class LocationScreen : Fragment() {
     lateinit var notes: MutableList<Note>
     lateinit var locationID: String
     var db = Firebase.firestore
-    val sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+    val sharedPreferences = requireContext().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
     val userId = sharedPreferences.getString("USER_ID", null)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-       binding=LocationScreenBinding.inflate(layoutInflater,container,false)
+        binding=LocationScreenBinding.inflate(layoutInflater,container,false)
         locationID = requireArguments().getString("Location").toString()
         return binding.root
 
@@ -58,9 +59,10 @@ class LocationScreen : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     suspend fun getNotes(){
-        val ref = db.collection("users").document(userId).collection("locations").document(locationID).collection("notes")
-        ref.get().addOnSuccessListener { notesDB->
+        val ref = userId?.let { db.collection("users").document(it).collection("locations").document(locationID).collection("notes") }
+        ref?.get()?.addOnSuccessListener { notesDB->
             for (note in notesDB){
                 notes.add(Note(
                     note.id.toInt(),
@@ -68,14 +70,11 @@ class LocationScreen : Fragment() {
                     note.data["note_content"] as String,
                     note.data["create_date"] as String
                 ))
-                Log.d("Data FireStore", "${note.data["note_title"]} created on ${note.data["create_date"]}")
             }
             adapterNotes.notifyDataSetChanged()
-            Log.d("Final Data", "Dataset Changed")
-        }.addOnFailureListener {exception->
+        }?.addOnFailureListener { exception->
             Log.d("Failure", "$exception")
         }
-        Log.d("After stuff", "Stuff finished")
     }
 
 

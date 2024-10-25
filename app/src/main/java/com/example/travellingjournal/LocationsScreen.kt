@@ -1,5 +1,6 @@
 package com.example.travellingjournal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.example.apiapp.MyAdaptorLocations
 import com.example.travellingjournal.databinding.LocationsScreenBinding
 import com.google.firebase.firestore.firestore
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -65,15 +67,38 @@ class LocationsScreen : Fragment() {
             }
         })
 
+        //Sets up way to edit location
+        adapter.onEditLocationClickListener(object : MyAdaptorLocations.OnEditLocationListener{
+            override fun onEditLocation(position: Int) {
+                val bundle = bundleOf(
+                    "Title" to adapter.list[position].title,
+                    "ID" to adapter.list[position].ID
+                )
+                findNavController().navigate(R.id.action_locationsScreen_to_addLocation, bundle)
+            }
+        })
+
+        //Sets up way to delete location
+        adapter.onDeleteLocationClickListener(object : MyAdaptorLocations.OnDeleteLocationListener {
+            override fun onDeleteLocation(position: Int) {
+                val ref = userId?.let { db.collection("users").document(it).collection("locations") }
+                if (ref != null) {
+                    ref.document(adapter.list[position].ID).delete()
+                }
+
+                adapter.deleteLocation(position)
+            }
+        })
         //Way to move to add location
         binding.addLocationButton.setOnClickListener {
             findNavController().navigate(R.id.action_locationsScreen_to_addLocation)
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     suspend fun getLocations(){
-        val ref = db.collection("users").document(userId).collection("locations")
-        ref.get().addOnSuccessListener { locations->
+        val ref = userId?.let { db.collection("users").document(it).collection("locations") }
+        ref?.get()?.addOnSuccessListener { locations->
             for (location in locations){
                 Locations.add(Location(
                     location.id,
@@ -83,11 +108,8 @@ class LocationsScreen : Fragment() {
                 Log.d("Data FireStore", "${location.data["location_title"]} and ${location.data["notes_count"]}")
             }
             adapter.notifyDataSetChanged()
-            Log.d("Final Data", "Dataset Changed")
-        }.addOnFailureListener {exception->
+        }?.addOnFailureListener { exception->
             Log.d("Failure", "$exception")
         }
-        Log.d("After stuff", "Stuff finished")
-
     }
 }

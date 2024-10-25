@@ -41,8 +41,29 @@
             android:textColor="#012E34"
             android:backgroundTint="#4a6c6f"
             app:layout_constraintTop_toBottomOf="@id/description"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+
+            android:padding="20dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/edit_location"
+            tools:text="Show Notes"
+            android:textColor="#012E34"
+            android:backgroundTint="#4a6c6f"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintEnd_toEndOf="@id/show_notes"
+            app:layout_constraintStart_toStartOf="@id/delete_location"
+            android:padding="20dp"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:id="@+id/delete_location"
+            tools:text="Show Notes"
+            android:textColor="#012E34"
+            android:backgroundTint="#4a6c6f"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintStart_toStartOf="parent"
 
             android:padding="20dp"
             android:layout_height="wrap_content"/>
