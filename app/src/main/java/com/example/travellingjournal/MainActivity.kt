@@ -1,5 +1,6 @@
 package com.example.travellingjournal
 
+import android.os.Build.VERSION_CODES.R
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 

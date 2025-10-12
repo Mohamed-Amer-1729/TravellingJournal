@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/location_nav"
+    app:startDestination="@id/locationsScreen">
+
+    <fragment
+        android:id="@+id/locationsScreen"
+        android:name="com.example.travellingjournal.LocationsScreen"
+        android:label="locations_screen"
+        tools:layout="@layout/locations_screen" >
+        <action
+            android:id="@+id/action_locationsScreen_to_locationScreen"
+            app:destination="@id/locationScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationScreen"
+        android:name="com.example.travellingjournal.LocationScreen"
+        android:label="LocationScreen" />
+    <fragment
+        android:id="@+id/addLocation"
+        android:name="com.example.travellingjournal.AddLocation"
+        android:label="AddLocation" />
+    <fragment
+        android:id="@+id/addNote"
+        android:name="com.example.travellingjournal.AddNote"
+        android:label="AddNote" />
+</navigation>
